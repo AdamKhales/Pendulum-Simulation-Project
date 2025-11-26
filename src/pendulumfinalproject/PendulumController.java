@@ -6,6 +6,7 @@ package pendulumfinalproject;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,6 +42,7 @@ public class PendulumController implements Initializable {
     @FXML
     private Circle bob;
     
+    //Physics variables
     private double mass = 10.0;
     private double gravity = 9.8;
     private double length = 1.0;
@@ -55,8 +57,7 @@ public class PendulumController implements Initializable {
     private double originX;
     private double originY;
     
-    
-    
+    private AnimationTimer timer;
 
     public PendulumController() {
     }
@@ -69,6 +70,27 @@ public class PendulumController implements Initializable {
         // TODO
         originX = pendulumPane.getLayoutX() + pendulumPane.getWidth()/ 2.0;
         originY = pendulumPane.getLayoutY();
+        
+        updatePendulumLayout();
+        
+        //Adding the listeners to all the sliders
+        massSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            mass = newVal.doubleValue();
+        });
+        
+        gravitySlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            gravity = newVal.doubleValue();
+        });
+        
+        lengthSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            length = newVal.doubleValue();
+            //change the length of the rope in the layout
+            updatePendulumLayout();
+        });
+        
+        airSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            airDrag = newVal.doubleValue();
+        });
     }    
 
     @FXML
@@ -79,6 +101,9 @@ public class PendulumController implements Initializable {
     private void graphBtnPressed(ActionEvent event) {
     }
     
+    /**
+     * updates the length of the rope and the position of the bob when something is changed.
+     */
     private void updatePendulumLayout() {
         double bobX = originX + length * 10 * Math.sin(angle);
         double bobY = originY + length * 10 * Math.cos(angle);
@@ -90,6 +115,26 @@ public class PendulumController implements Initializable {
         
         bob.setCenterX(bobX);
         bob.setCenterY(bobY);
+    }
+    
+    /**
+     * updates the acceleration, the velocity and the angle of the pendulum.
+     * @param dt the change in time (time 2 - time 1), interval of the time passed.
+     */
+    private void updatePhysics(double dt) {
+        double damping = 1 - airDrag;
+        
+        // α = −g/L ⋅ ​sin(θ)
+        angularAcceleration = -(gravity/length) * Math.sin(angle);
+        
+        // ω = ω + α⋅Δt 
+        angularVelocity += angularAcceleration * dt;
+        
+        angularVelocity *= damping;
+        
+        //θ = θ + ω⋅Δt
+        angle += angularVelocity * dt;
+        
     }
     
 }
