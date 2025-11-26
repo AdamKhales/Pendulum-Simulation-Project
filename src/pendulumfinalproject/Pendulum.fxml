@@ -10,8 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1161.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1161.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pendulumfinalproject.PendulumController">
    <center>
       <Pane prefHeight="510.0" prefWidth="546.0" style="-fx-border-color: black; -fx-border-width: 3;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -27,7 +26,7 @@
       <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
    </padding>
    <left>
-      <Pane prefHeight="546.0" prefWidth="247.0" style="-fx-border-color: black; -fx-border-width: 3;" BorderPane.alignment="CENTER">
+      <Pane fx:id="pendulumPane" prefHeight="546.0" prefWidth="247.0" style="-fx-border-color: black; -fx-border-width: 3;" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="24.0" layoutY="46.0" text="Mass:">
                <font>
@@ -40,19 +39,19 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Slider fx:id="gravitySlider" layoutX="89.0" layoutY="103.0" majorTickUnit="100.0" min="10.0" minorTickCount="10" prefHeight="14.0" prefWidth="134.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0" />
+            <Slider fx:id="gravitySlider" layoutX="89.0" layoutY="103.0" majorTickUnit="100.0" max="20.0" minorTickCount="50" prefHeight="14.0" prefWidth="134.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="9.8" />
             <Label layoutX="24.0" layoutY="155.0" text="Length:">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Slider fx:id="lengthSlider" layoutX="94.0" layoutY="161.0" majorTickUnit="100.0" min="10.0" minorTickCount="10" prefHeight="37.0" prefWidth="129.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0" />
+            <Slider fx:id="lengthSlider" layoutX="94.0" layoutY="161.0" majorTickUnit="5.0" max="5.0" min="1.0" minorTickCount="5" prefHeight="37.0" prefWidth="129.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
             <Label layoutX="24.0" layoutY="223.0" text="Air drag:">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Slider fx:id="airSlider" layoutX="92.0" layoutY="229.0" majorTickUnit="100.0" min="10.0" minorTickCount="10" prefHeight="37.0" prefWidth="131.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0" />
+            <Slider fx:id="airSlider" layoutX="92.0" layoutY="229.0" majorTickUnit="1.0" max="0.1" minorTickCount="50" prefHeight="37.0" prefWidth="131.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
             <Button fx:id="startPauseBtn" layoutX="77.0" layoutY="312.0" mnemonicParsing="false" onAction="#startPauseBtnPressed" prefHeight="43.0" prefWidth="94.0" text="Start" />
             <Button fx:id="graphBtn" layoutX="77.0" layoutY="365.0" mnemonicParsing="false" onAction="#graphBtnPressed" prefHeight="43.0" prefWidth="94.0" text="See Graphs" />
          </children>
