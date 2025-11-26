@@ -68,6 +68,7 @@ public class PendulumController implements Initializable {
     private double originY;
     
     private AnimationTimer timer;
+    private boolean running = false;
 
     public PendulumController() {
     }
@@ -130,10 +131,21 @@ public class PendulumController implements Initializable {
 
     @FXML
     private void startPauseBtnPressed(ActionEvent event) {
+        //checks if the animation is running
+        if (running) {
+            timer.stop();
+            startPauseBtn.setText("Start");
+        } else {
+            timer.start();
+            startPauseBtn.setText("Pause");
+        }
+        //If it was true, it becomes false and the opposite is also true.
+        running = !running;
     }
 
     @FXML
     private void graphBtnPressed(ActionEvent event) {
+        //TODO
     }
     
     /**
