@@ -53,7 +53,8 @@
             </Label>
             <Slider fx:id="airSlider" layoutX="92.0" layoutY="229.0" majorTickUnit="1.0" max="0.1" minorTickCount="50" prefHeight="37.0" prefWidth="131.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
             <Button fx:id="startPauseBtn" layoutX="77.0" layoutY="312.0" mnemonicParsing="false" onAction="#startPauseBtnPressed" prefHeight="43.0" prefWidth="94.0" text="Start" />
-            <Button fx:id="graphBtn" layoutX="77.0" layoutY="365.0" mnemonicParsing="false" onAction="#graphBtnPressed" prefHeight="43.0" prefWidth="94.0" text="See Graphs" />
+            <Button fx:id="graphBtn" layoutX="77.0" layoutY="413.0" mnemonicParsing="false" onAction="#graphBtnPressed" prefHeight="43.0" prefWidth="94.0" text="See Graphs" />
+            <Button fx:id="resetBtn" layoutX="77.0" layoutY="362.0" mnemonicParsing="false" onAction="#resetBtnPressed" prefHeight="43.0" prefWidth="94.0" text="Reset" />
          </children>
       </Pane>
    </left>
