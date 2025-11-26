@@ -117,4 +117,24 @@ public class PendulumController implements Initializable {
         bob.setCenterY(bobY);
     }
     
+    /**
+     * updates the acceleration, the velocity and the angle of the pendulum.
+     * @param dt the change in time (time 2 - time 1), interval of the time passed.
+     */
+    private void updatePhysics(double dt) {
+        double damping = 1 - airDrag;
+        
+        // α = −g/L ⋅ ​sin(θ)
+        angularAcceleration = -(gravity/length) * Math.sin(angle);
+        
+        // ω = ω + α⋅Δt 
+        angularVelocity += angularAcceleration * dt;
+        
+        angularVelocity *= damping;
+        
+        //θ = θ + ω⋅Δt
+        angle += angularVelocity * dt;
+        
+    }
+    
 }
