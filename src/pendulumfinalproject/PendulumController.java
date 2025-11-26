@@ -91,6 +91,21 @@ public class PendulumController implements Initializable {
         airSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             airDrag = newVal.doubleValue();
         });
+        
+        timer = new AnimationTimer() {
+            private long lastTime = 0;
+            @Override
+            public void handle(long now) {
+                if (lastTime > 0) {
+                    //finds the difference between the current time and the last recorded time and divides by 10^9 to convert nanoseconds into seconds
+                    double dt = (now - lastTime) / 1e9;
+                    updatePhysics(dt);
+                    updatePendulumLayout();
+                }
+                //sets the last recorded time to the current one
+                lastTime = now;
+            }
+        };
     }    
 
     @FXML
