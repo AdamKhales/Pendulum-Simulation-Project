@@ -7,6 +7,7 @@ package pendulumfinalproject;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,24 +24,33 @@ import javafx.scene.shape.Line;
  */
 public class PendulumController implements Initializable {
 
-    @FXML
-    private Pane pendulumPane;
-    @FXML
-    private Slider massSlider;
-    @FXML
-    private Slider gravitySlider;
-    @FXML
-    private Slider lengthSlider;
-    @FXML
+     @FXML
     private Slider airSlider;
-    @FXML
-    private Button startPauseBtn;
-    @FXML
-    private Button graphBtn;
-    @FXML
-    private Line rope;
+
     @FXML
     private Circle bob;
+
+    @FXML
+    private Pane drawingPane;
+
+    @FXML
+    private Button graphBtn;
+
+    @FXML
+    private Slider gravitySlider;
+
+    @FXML
+    private Slider lengthSlider;
+
+    @FXML
+    private Slider massSlider;
+
+    @FXML
+    private Line rope;
+
+    @FXML
+    private Button startPauseBtn;
+
     
     //Physics variables
     private double mass = 10.0;
@@ -67,9 +77,19 @@ public class PendulumController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        Platform.runLater(() -> {
+            originX = drawingPane.getWidth() / 2;
+            originY = 0;
+            updatePendulumLayout();
+        });
+        
         // TODO
-        originX = pendulumPane.getLayoutX() + pendulumPane.getWidth()/ 2.0;
-        originY = pendulumPane.getLayoutY();
+        drawingPane.layoutBoundsProperty().addListener((obs, old, bounds) -> {
+            originX = bounds.getWidth() / 2;
+            originY = 0;
+            updatePendulumLayout();
+        });
         
         updatePendulumLayout();
         
@@ -120,16 +140,27 @@ public class PendulumController implements Initializable {
      * updates the length of the rope and the position of the bob when something is changed.
      */
     private void updatePendulumLayout() {
-        double bobX = originX + length * 10 * Math.sin(angle);
-        double bobY = originY + length * 10 * Math.cos(angle);
+        double pixelLength = length * 100;
+        double bobX = originX + pixelLength * Math.sin(angle);
+        double bobY = originY + pixelLength * Math.cos(angle);
         
         rope.setStartX(originX);
         rope.setStartY(originY);
-        rope.setEndX(bobX);
-        rope.setEndY(bobY);
+        
         
         bob.setCenterX(bobX);
         bob.setCenterY(bobY);
+        
+        // a^2 = b^2 + c^2 to find the distance to move the rope such that it hits the edge of the bob
+        double distance  = Math.sqrt( ((bobX - originX) * (bobX - originX)) + ((bobY - originY) * (bobY - originY)));
+
+        double endX = bobX - (bobX - originX) / distance * bob.getRadius();
+        double endY = bobY -  (bobY - originY)  / distance * bob.getRadius();
+        
+        
+        rope.setEndX(endX);
+        rope.setEndY(endY);
+        
     }
     
     /**
