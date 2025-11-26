@@ -4,7 +4,11 @@
  */
 package pendulumfinalproject;
 
+import java.io.IOException;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
@@ -22,7 +26,13 @@ public class PendulumFinalProject extends Application{
     }
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
+        
+        Parent root = FXMLLoader.load(getClass().getResource("Pendulum.fxml"));
+        
+        Scene scene = new Scene(root);
+        stage.setTitle("Pendulum Simulator");
+        stage.setScene(scene);
         stage.show();
     }
     

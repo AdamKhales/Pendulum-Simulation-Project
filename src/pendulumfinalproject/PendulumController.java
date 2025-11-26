@@ -52,8 +52,8 @@ public class PendulumController implements Initializable {
     private double angularAcceleration = 0.0;
     
     //rope origin
-    private final double originX = pendulumPane.getLayoutX() + pendulumPane.getWidth()/ 2.0;
-    private final double originY = pendulumPane.getLayoutY();
+    private double originX;
+    private double originY;
     
     
     
@@ -67,6 +67,8 @@ public class PendulumController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        originX = pendulumPane.getLayoutX() + pendulumPane.getWidth()/ 2.0;
+        originY = pendulumPane.getLayoutY();
     }    
 
     @FXML
@@ -75,6 +77,19 @@ public class PendulumController implements Initializable {
 
     @FXML
     private void graphBtnPressed(ActionEvent event) {
+    }
+    
+    private void updatePendulumLayout() {
+        double bobX = originX + length * 10 * Math.sin(angle);
+        double bobY = originY + length * 10 * Math.cos(angle);
+        
+        rope.setStartX(originX);
+        rope.setStartY(originY);
+        rope.setEndX(bobX);
+        rope.setEndY(bobY);
+        
+        bob.setCenterX(bobX);
+        bob.setCenterY(bobY);
     }
     
 }
