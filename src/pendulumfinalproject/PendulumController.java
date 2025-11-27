@@ -50,7 +50,9 @@ public class PendulumController implements Initializable {
 
     @FXML
     private Button startPauseBtn;
-
+    
+    @FXML
+    private Button resetBtn;
     
     //Physics variables
     private double mass = 10.0;
@@ -135,12 +137,43 @@ public class PendulumController implements Initializable {
         if (running) {
             timer.stop();
             startPauseBtn.setText("Start");
+            //reset the lastTime so dt doesnt change or jump (was one of the previous issues)
+            timer = new AnimationTimer() {
+            private long lastTime = 0;
+                @Override
+                public void handle(long now) {
+                    if (lastTime > 0) {
+                        double dt = (now - lastTime) / 1e9;
+                        updatePhysics(dt);
+                        updatePendulumLayout();
+                    }
+                    lastTime = now;
+            }
+        };
         } else {
+            //reset the lastTime so dt doesnt change or jump (was one of the previous issues)
+            timer = new AnimationTimer() {
+            private long lastTime = 0;
+                @Override
+                public void handle(long now) {
+                    if (lastTime > 0) {
+                        double dt = (now - lastTime) / 1e9;
+                        updatePhysics(dt);
+                        updatePendulumLayout();
+                    }
+                    lastTime = now;
+            }
+        };
             timer.start();
             startPauseBtn.setText("Pause");
         }
         //If it was true, it becomes false and the opposite is also true.
         running = !running;
+    }
+    
+    @FXML
+    void resetBtnPressed(ActionEvent event) {
+        
     }
 
     @FXML
