@@ -71,6 +71,7 @@ public class PendulumController implements Initializable {
     
     private AnimationTimer timer;
     private boolean running = false;
+    private long lastTime = 0;
 
     public PendulumController() {
     }
@@ -83,7 +84,7 @@ public class PendulumController implements Initializable {
         
         Platform.runLater(() -> {
             originX = drawingPane.getWidth() / 2;
-            originY = 0;
+            originY = 3;
             updatePendulumLayout();
         });
         
@@ -106,8 +107,17 @@ public class PendulumController implements Initializable {
         });
         
         lengthSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
-            length = newVal.doubleValue();
-            //change the length of the rope in the layout
+
+            double oldLength = length;
+            double newLength = newVal.doubleValue();
+
+            // update length
+            length = newLength;
+
+            // conserve angular momentum so no weird loops happen
+            angularVelocity *= (oldLength / newLength);
+            
+            //changes the length of the line (rope)
             updatePendulumLayout();
         });
         
@@ -116,7 +126,6 @@ public class PendulumController implements Initializable {
         });
         
         timer = new AnimationTimer() {
-            private long lastTime = 0;
             @Override
             public void handle(long now) {
                 if (lastTime > 0) {
@@ -138,32 +147,8 @@ public class PendulumController implements Initializable {
             timer.stop();
             startPauseBtn.setText("Start");
             //reset the lastTime so dt doesnt change or jump (was one of the previous issues)
-            timer = new AnimationTimer() {
-            private long lastTime = 0;
-                @Override
-                public void handle(long now) {
-                    if (lastTime > 0) {
-                        double dt = (now - lastTime) / 1e9;
-                        updatePhysics(dt);
-                        updatePendulumLayout();
-                    }
-                    lastTime = now;
-            }
-        };
+            lastTime = 0;
         } else {
-            //reset the lastTime so dt doesnt change or jump (was one of the previous issues)
-            timer = new AnimationTimer() {
-            private long lastTime = 0;
-                @Override
-                public void handle(long now) {
-                    if (lastTime > 0) {
-                        double dt = (now - lastTime) / 1e9;
-                        updatePhysics(dt);
-                        updatePendulumLayout();
-                    }
-                    lastTime = now;
-            }
-        };
             timer.start();
             startPauseBtn.setText("Pause");
         }
@@ -220,7 +205,6 @@ public class PendulumController implements Initializable {
      * @param dt the change in time (time 2 - time 1), interval of the time passed.
      */
     private void updatePhysics(double dt) {
-        double damping = 1 - airDrag;
         
         // α = −g/L ⋅ ​sin(θ)
         angularAcceleration = -(gravity/length) * Math.sin(angle);
@@ -228,7 +212,7 @@ public class PendulumController implements Initializable {
         // ω = ω + α⋅Δt 
         angularVelocity += angularAcceleration * dt;
         
-        angularVelocity *= damping;
+        angularVelocity *= Math.exp(-airDrag * dt);
         
         //θ = θ + ω⋅Δt
         angle += angularVelocity * dt;
