@@ -173,7 +173,14 @@ public class PendulumController implements Initializable {
     
     @FXML
     void resetBtnPressed(ActionEvent event) {
+        //Back to the initial variables
+        angle = Math.PI / 4;
+        angularVelocity = 0.0;
+        angularAcceleration = 0.0;
+
+        // Reset rope and bob visuals
         
+        updatePendulumLayout();
     }
 
     @FXML

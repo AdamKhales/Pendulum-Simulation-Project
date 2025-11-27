@@ -12,7 +12,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1161.0" style="-fx-background-color: pink;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pendulumfinalproject.PendulumController">
    <center>
-      <Pane fx:id="drawingPane" prefHeight="510.0" prefWidth="546.0" style="-fx-border-color: black; -fx-border-width: 3;" BorderPane.alignment="CENTER">
+      <Pane fx:id="drawingPane" prefHeight="510.0" prefWidth="546.0" style="-fx-border-color: black; -fx-border-width: 3; -fx-border-radius: 8;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets left="10.0" />
          </BorderPane.margin>
@@ -26,7 +26,7 @@
       <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
    </padding>
    <left>
-      <Pane prefHeight="546.0" prefWidth="247.0" style="-fx-border-color: black; -fx-border-width: 3;" BorderPane.alignment="CENTER">
+      <Pane prefHeight="546.0" prefWidth="247.0" style="-fx-border-color: black; -fx-border-width: 3; -fx-border-radius: 8;" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="24.0" layoutY="46.0" text="Mass:">
                <font>
