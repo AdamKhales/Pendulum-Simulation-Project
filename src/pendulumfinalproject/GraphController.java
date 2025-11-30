@@ -82,19 +82,31 @@ public class GraphController implements Initializable {
 
         series.getData().add(new XYChart.Data<>(t, angle));
     }
-    
-    public void addVelocityPoint(double t, double vel) {
-    XYChart.Series<Number, Number> series;
 
-    if (velocityChart.getData().isEmpty()) {
-        series = new XYChart.Series<>();
-        velocityChart.getData().add(series);
-    } else {
-        series = velocityChart.getData().get(0);
+    public void addVelocityPoint(double t, double vel) {
+        XYChart.Series<Number, Number> series;
+
+        if (velocityChart.getData().isEmpty()) {
+            series = new XYChart.Series<>();
+            velocityChart.getData().add(series);
+        } else {
+            series = velocityChart.getData().get(0);
+        }
+
+        series.getData().add(new XYChart.Data<>(t, vel));
     }
 
-    series.getData().add(new XYChart.Data<>(t, vel));
-}
+    public void addAccelerationPoint(double t, double acc) {
+        XYChart.Series<Number, Number> series;
 
+        if (accelerationChart.getData().isEmpty()) {
+            series = new XYChart.Series<>();
+            accelerationChart.getData().add(series);
+        } else {
+            series = accelerationChart.getData().get(0);
+        }
+
+        series.getData().add(new XYChart.Data<>(t, acc));
+    }
 
 }
