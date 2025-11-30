@@ -71,17 +71,16 @@ public class GraphController implements Initializable {
     }
 
     public void addAnglePoint(double t, double angle) {
-    getSeries(angleChart).getData().add(new XYChart.Data<>(t, angle));
-}
+        getSeries(angleChart).getData().add(new XYChart.Data<>(t, angle));
+    }
 
-public void addVelocityPoint(double t, double vel) {
-    getSeries(velocityChart).getData().add(new XYChart.Data<>(t, vel));
-}
+    public void addVelocityPoint(double t, double vel) {
+        getSeries(velocityChart).getData().add(new XYChart.Data<>(t, vel));
+    }
 
-public void addAccelerationPoint(double t, double acc) {
-    getSeries(accelerationChart).getData().add(new XYChart.Data<>(t, acc));
-}
-
+    public void addAccelerationPoint(double t, double acc) {
+        getSeries(accelerationChart).getData().add(new XYChart.Data<>(t, acc));
+    }
 
     private XYChart.Series<Number, Number> getSeries(LineChart<Number, Number> chart) {
         if (chart.getData().isEmpty()) {
@@ -89,6 +88,12 @@ public void addAccelerationPoint(double t, double acc) {
             chart.getData().add(series);
         }
         return chart.getData().get(0);
+    }
+
+    public void clearGraphs() {
+        angleChart.getData().clear();
+        velocityChart.getData().clear();
+        accelerationChart.getData().clear();
     }
 
 }
