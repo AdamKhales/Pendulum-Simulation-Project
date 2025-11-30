@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.layout.VBox;
 
 /**
@@ -68,4 +69,18 @@ public class GraphController implements Initializable {
         // add charts to VBox
         vbox.getChildren().addAll(angleChart, velocityChart, accelerationChart);
     }
+
+    public void addAnglePoint(double t, double angle) {
+        XYChart.Series<Number, Number> series;
+
+        if (angleChart.getData().isEmpty()) {
+            series = new XYChart.Series<>();
+            angleChart.getData().add(series);
+        } else {
+            series = angleChart.getData().get(0);
+        }
+
+        series.getData().add(new XYChart.Data<>(t, angle));
+    }
+
 }
