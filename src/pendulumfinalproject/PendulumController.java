@@ -321,6 +321,12 @@ public class PendulumController implements Initializable {
             //reset times 
             graphTime = 0;
             lastTime = 0;
+            
+            //update the sliders to be the new values
+            lengthSlider.setValue(length);
+            massSlider.setValue(mass);
+            gravitySlider.setValue(gravity);
+            airSlider.setValue(airDrag);
         }
     }
     
