@@ -4,7 +4,9 @@
  */
 package pendulumfinalproject;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.AnimationTimer;
@@ -20,6 +22,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -58,6 +61,12 @@ public class PendulumController implements Initializable {
 
     @FXML
     private Button resetBtn;
+    
+    @FXML
+    private Button loadBtn;
+    
+    @FXML
+    private Button saveBtn;
 
     //Physics variables
     private double mass = 10.0;
@@ -221,6 +230,19 @@ public class PendulumController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    @FXML
+    void loadVariables(ActionEvent event) {
+
+    }
+    /**
+     * saves all the variables in a file using FileChooser
+     * @param event 
+     */
+    @FXML
+    void saveVariables(ActionEvent event) {
+        
     }
 
     /**
