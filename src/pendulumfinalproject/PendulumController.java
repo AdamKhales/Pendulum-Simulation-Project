@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -216,6 +217,7 @@ public class PendulumController implements Initializable {
                 graphController = loader.getController();
 
                 graphStage = new Stage();
+                graphStage.getIcons().add(new Image(getClass().getResourceAsStream("/image/pendulumIcon.jpg")));
                 graphStage.setScene(new Scene(root));
                 graphStage.setTitle("Pendulum Graphs");
                 graphStage.setOnCloseRequest(e -> {

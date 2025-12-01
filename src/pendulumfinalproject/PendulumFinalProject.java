@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -29,6 +30,8 @@ public class PendulumFinalProject extends Application{
     public void start(Stage stage) throws IOException {
         
         Parent root = FXMLLoader.load(getClass().getResource("Pendulum.fxml"));
+        
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/image/pendulumIcon.jpg")));
         
         Scene scene = new Scene(root);
         stage.setTitle("Pendulum Simulator");
