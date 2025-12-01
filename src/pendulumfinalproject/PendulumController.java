@@ -259,7 +259,7 @@ public class PendulumController implements Initializable {
             Double newGravity = null;
             Double newAirDrag = null;
 
-            // Read the file line by line
+            //read the file line by line
             while (sc.hasNextLine()) {
                 //seperates the lines to find the variable and its value (mass=0.1 -> variable(mass) and value(0.1)
                 String line = sc.nextLine();
@@ -350,7 +350,7 @@ public class PendulumController implements Initializable {
             //if the file does not exist it creates a new one with that name
             if (!file.exists()) {
                 file.createNewFile();
-                        }
+            }
 
             try (PrintWriter out = new PrintWriter(file)) {
                 //writes all the variables in the file
@@ -369,10 +369,10 @@ public class PendulumController implements Initializable {
     }
 
     /**
-     * updates the length of the rope and the position of the bob when something
-     * is changed.
+     * updates the length of the rope and the position of the bob when called
      */
     private void updatePendulumLayout() {
+        //make it a little bigger visually when you change the length
         double pixelLength = length * 100;
         double bobX = originX + pixelLength * Math.sin(angle);
         double bobY = originY + pixelLength * Math.cos(angle);
@@ -420,9 +420,10 @@ public class PendulumController implements Initializable {
         */
        private void updateGraphs(double dt) {
         if (graphController == null) return;
-
+        //add each change of time to the total time of the graph
         graphTime += dt;
-
+        
+        //add the points for each graph
         graphController.addAnglePoint(graphTime, angle);
         graphController.addVelocityPoint(graphTime, angularVelocity);
         graphController.addAccelerationPoint(graphTime, angularAcceleration);
