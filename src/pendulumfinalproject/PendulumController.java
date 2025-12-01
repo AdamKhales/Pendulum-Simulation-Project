@@ -70,16 +70,18 @@ public class PendulumController implements Initializable {
     private double angularVelocity = 0.0;
     private double angularAcceleration = 0.0;
 
-    // Graphing variables
-    private GraphController graphController;
-    private double graphTime = 0;
+    private GraphController graphController = null;
 
+    private Stage graphStage = null;
+    private double graphTime = 0;
+    
     //rope origin
     private double originX;
     private double originY;
 
     private AnimationTimer timer;
     private boolean running = false;
+    private long lastTime = 0;
 
     public PendulumController() {
     }
@@ -92,14 +94,22 @@ public class PendulumController implements Initializable {
 
         Platform.runLater(() -> {
             originX = drawingPane.getWidth() / 2;
-            originY = 0;
+            originY = 3;
             updatePendulumLayout();
+            
+            Stage pendulumStage = (Stage) drawingPane.getScene().getWindow();
+
+            pendulumStage.setOnCloseRequest(e -> {
+                if (graphStage != null) {
+                    graphStage.close();
+                }
+            });
         });
 
         // TODO
         drawingPane.layoutBoundsProperty().addListener((obs, old, bounds) -> {
             originX = bounds.getWidth() / 2;
-            originY = 0;
+            originY = 3;
             updatePendulumLayout();
         });
 
@@ -125,7 +135,6 @@ public class PendulumController implements Initializable {
         });
 
         timer = new AnimationTimer() {
-            private long lastTime = 0;
 
             @Override
             public void handle(long now) {
@@ -134,12 +143,19 @@ public class PendulumController implements Initializable {
                     double dt = (now - lastTime) / 1e9;
                     updatePhysics(dt);
                     updatePendulumLayout();
+                    updateGraphs(dt);
                 }
                 //sets the last recorded time to the current one
                 lastTime = now;
             }
+            
+            public void resetTime() {
+                lastTime = 0;
+            }
         };
+        
     }
+    
 
     @FXML
     private void startPauseBtnPressed(ActionEvent event) {
@@ -147,37 +163,20 @@ public class PendulumController implements Initializable {
         if (running) {
             timer.stop();
             startPauseBtn.setText("Start");
-            //reset the lastTime so dt doesnt change or jump (was one of the previous issues)
-            timer = new AnimationTimer() {
-                private long lastTime = 0;
-
-                @Override
-                public void handle(long now) {
-                    if (lastTime > 0) {
-                        double dt = (now - lastTime) / 1e9;
-                        updatePhysics(dt);
-                        updatePendulumLayout();
-                    }
-                    lastTime = now;
-                }
-            };
+            startPauseBtn.setStyle("-fx-background-color: lightgreen;"
+                    + "-fx-border-color: black;"
+                    + "-fx-background-radius: 5;"
+                    + "-fx-border-radius: 5");
+            
         } else {
-            //reset the lastTime so dt doesnt change or jump (was one of the previous issues)
-            timer = new AnimationTimer() {
-                private long lastTime = 0;
-
-                @Override
-                public void handle(long now) {
-                    if (lastTime > 0) {
-                        double dt = (now - lastTime) / 1e9;
-                        updatePhysics(dt);
-                        updatePendulumLayout();
-                    }
-                    lastTime = now;
-                }
-            };
+            lastTime = 0;
             timer.start();
             startPauseBtn.setText("Pause");
+            startPauseBtn.setStyle("-fx-background-color: crimson;"
+                    + "-fx-border-color: black;"
+                    + "-fx-background-radius: 5;"
+                    + "-fx-border-radius: 5");
+
         }
         //If it was true, it becomes false and the opposite is also true.
         running = !running;
@@ -189,23 +188,36 @@ public class PendulumController implements Initializable {
         angle = Math.PI / 4;
         angularVelocity = 0.0;
         angularAcceleration = 0.0;
+        graphTime = 0;
 
         // Reset rope and bob visuals
         updatePendulumLayout();
+        if (graphController != null) {
+            graphController.clearGraphs();
+        }
     }
 
     @FXML
     private void graphBtnPressed(ActionEvent event) {
+        //TODO
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Graph.fxml"));
-            Parent root = loader.load();
+            if (graphStage == null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Graph.fxml"));
+                Parent root = loader.load();
+                graphController = loader.getController();
 
-            graphController = loader.getController(); // store reference
+                graphStage = new Stage();
+                graphStage.setScene(new Scene(root));
+                graphStage.setTitle("Pendulum Graphs");
+                graphStage.setOnCloseRequest(e -> {
+                    graphStage = null;
+                    graphController = null;
+                });
 
-            Stage stage = new Stage();
-            stage.setTitle("Pendulum Graphs");
-            stage.setScene(new Scene(root));
-            stage.show();
+                graphStage.show();
+            } else {
+                graphStage.toFront();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -245,19 +257,27 @@ public class PendulumController implements Initializable {
      * passed.
      */
     private void updatePhysics(double dt) {
-        double damping = 1 - airDrag;
-
         // α = −g/L ⋅ ​sin(θ)
         angularAcceleration = -(gravity / length) * Math.sin(angle);
 
         // ω = ω + α⋅Δt 
         angularVelocity += angularAcceleration * dt;
 
-        angularVelocity *= damping;
+        angularVelocity *= Math.exp(-airDrag * dt);
 
         //θ = θ + ω⋅Δt
         angle += angularVelocity * dt;
 
+    }
+    
+       private void updateGraphs(double dt) {
+        if (graphController == null) return;
+
+        graphTime += dt;
+
+        graphController.addAnglePoint(graphTime, angle);
+        graphController.addVelocityPoint(graphTime, angularVelocity);
+        graphController.addAccelerationPoint(graphTime, angularAcceleration);
     }
 
 }
