@@ -347,11 +347,11 @@ public class PendulumController implements Initializable {
         if (file == null) return;
         
         try {
-            
+            //if the file does not exist it creates a new one with that name
             if (!file.exists()) {
-                file.createNewFile();   // <-- THIS is the only required addition
-            }
-            
+                file.createNewFile();
+                        }
+
             try (PrintWriter out = new PrintWriter(file)) {
                 //writes all the variables in the file
                 out.println("length=" + length);
