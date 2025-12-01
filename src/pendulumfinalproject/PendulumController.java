@@ -97,8 +97,10 @@ public class PendulumController implements Initializable {
             originY = 3;
             updatePendulumLayout();
             
+            //find the stage on which the pendulum is 
             Stage pendulumStage = (Stage) drawingPane.getScene().getWindow();
-
+            
+            //if the pendulum stage is closed the graph stage also closes if its open
             pendulumStage.setOnCloseRequest(e -> {
                 if (graphStage != null) {
                     graphStage.close();
@@ -106,7 +108,7 @@ public class PendulumController implements Initializable {
             });
         });
 
-        // TODO
+        //changes the location of the pendulum if the screen changes sizes 
         drawingPane.layoutBoundsProperty().addListener((obs, old, bounds) -> {
             originX = bounds.getWidth() / 2;
             originY = 3;
@@ -148,10 +150,6 @@ public class PendulumController implements Initializable {
                 //sets the last recorded time to the current one
                 lastTime = now;
             }
-            
-            public void resetTime() {
-                lastTime = 0;
-            }
         };
         
     }
@@ -192,6 +190,7 @@ public class PendulumController implements Initializable {
 
         // Reset rope and bob visuals
         updatePendulumLayout();
+        //clears the graphs if the stage is open
         if (graphController != null) {
             graphController.clearGraphs();
         }
@@ -199,9 +198,9 @@ public class PendulumController implements Initializable {
 
     @FXML
     private void graphBtnPressed(ActionEvent event) {
-        //TODO
         try {
             if (graphStage == null) {
+                //opens the stage if the stage is not null
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("Graph.fxml"));
                 Parent root = loader.load();
                 graphController = loader.getController();
@@ -262,14 +261,18 @@ public class PendulumController implements Initializable {
 
         // ω = ω + α⋅Δt 
         angularVelocity += angularAcceleration * dt;
-
+        
+        //makes the damping exponential which is more realistic
         angularVelocity *= Math.exp(-airDrag * dt);
 
         //θ = θ + ω⋅Δt
         angle += angularVelocity * dt;
 
     }
-    
+       /**
+        * updates the graphs by adding points in it
+        * @param dt change of time
+        */
        private void updateGraphs(double dt) {
         if (graphController == null) return;
 
