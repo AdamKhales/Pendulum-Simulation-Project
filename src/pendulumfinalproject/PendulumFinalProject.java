@@ -30,7 +30,7 @@ public class PendulumFinalProject extends Application{
     public void start(Stage stage) throws IOException {
         
         Parent root = FXMLLoader.load(getClass().getResource("Pendulum.fxml"));
-        
+        //sets the icon of the stage
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/image/pendulumIcon.jpg")));
         
         Scene scene = new Scene(root);

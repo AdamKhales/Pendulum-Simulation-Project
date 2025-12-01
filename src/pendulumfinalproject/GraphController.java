@@ -69,19 +69,38 @@ public class GraphController implements Initializable {
         // add charts to VBox
         vbox.getChildren().addAll(angleChart, velocityChart, accelerationChart);
     }
-
+    /**
+     * adds the angles in the angle graph
+     * @param t time
+     * @param angle the angle 
+     */
     public void addAnglePoint(double t, double angle) {
         getSeries(angleChart).getData().add(new XYChart.Data<>(t, angle));
     }
-
+    
+    /**
+     * adds the velocity points in the velocity graph
+     * @param t time 
+     * @param vel velocity
+     */
     public void addVelocityPoint(double t, double vel) {
         getSeries(velocityChart).getData().add(new XYChart.Data<>(t, vel));
     }
-
+    
+    /**
+     * adds the acceleration points in the graph
+     * @param t time
+     * @param acc acceleration
+     */
     public void addAccelerationPoint(double t, double acc) {
         getSeries(accelerationChart).getData().add(new XYChart.Data<>(t, acc));
     }
-
+    
+    /**
+     * returns the series/ points in the graph
+     * @param chart the graph
+     * @return the points
+     */
     private XYChart.Series<Number, Number> getSeries(LineChart<Number, Number> chart) {
         if (chart.getData().isEmpty()) {
             XYChart.Series<Number, Number> series = new XYChart.Series<>();
@@ -89,7 +108,10 @@ public class GraphController implements Initializable {
         }
         return chart.getData().get(0);
     }
-
+    
+    /**
+     * clears the graphs when called
+     */
     public void clearGraphs() {
         angleChart.getData().clear();
         velocityChart.getData().clear();
