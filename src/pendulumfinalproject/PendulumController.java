@@ -5,6 +5,7 @@
 package pendulumfinalproject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -231,11 +232,98 @@ public class PendulumController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+    /**
+     * loads variables from a file to set the initial variables of the pendulum
+     * @param event 
+     */
     @FXML
-    void loadVariables(ActionEvent event) {
+    void loadVariables(ActionEvent event) throws FileNotFoundException {
+        //creates a file chooser so the user can pick a file
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load Pendulum Settings");
+        fileChooser.getExtensionFilters().add(
+            new FileChooser.ExtensionFilter("Pendulum Files", "*.pendulum")
+        );
 
+        //show the dialog and if the user cancels the result is null
+        File file = fileChooser.showOpenDialog(null);
+        if (file == null) return;
+
+        try (java.util.Scanner sc = new java.util.Scanner(file)) {
+
+            //temp values so that we are sure the values are all loaded later before applying 
+            Double newLength = null;
+            Double newMass = null;
+            Double newAngle = null;
+            Double newVelocity = null;
+            Double newGravity = null;
+            Double newAirDrag = null;
+
+            // Read the file line by line
+            while (sc.hasNextLine()) {
+                //seperates the lines to find the variable and its value (mass=0.1 -> variable(mass) and value(0.1)
+                String line = sc.nextLine();
+                String[] parts = line.split("=");
+
+                //skip malformed lines (e.g if it has more than one =)
+                if (parts.length != 2) continue;
+
+                String variable = parts[0].trim();
+                String value = parts[1].trim();
+
+                //verify which variable it is 
+                switch (variable) {
+                    case "length":
+                        newLength = Double.parseDouble(value);
+                        break;
+                    case "mass":
+                        newMass = Double.parseDouble(value);
+                        break;
+                    case "angle":
+                        newAngle = Double.parseDouble(value);
+                        break;
+                    case "velocity":
+                        newVelocity = Double.parseDouble(value);
+                        break;
+                    case "gravity":
+                        newGravity = Double.parseDouble(value);
+                        break;
+                    case "damping":
+                        newAirDrag = Double.parseDouble(value);
+                        break;
+                }
+            }
+
+            //make sure all the values exist before applying them
+            if (newLength == null || newMass == null || newAngle == null ||
+                newVelocity == null || newGravity == null || newAirDrag == null) {
+
+                System.out.println("File is missing values");
+                return;
+            }
+
+            //set the loaded variables 
+            length = newLength;
+            mass = newMass;
+            angle = newAngle;
+            angularVelocity = newVelocity;
+            gravity = newGravity;
+            airDrag = newAirDrag;
+            
+            //update layout
+            updatePendulumLayout();
+            
+            //reset graphs
+            if (graphController != null) {
+                graphController.clearGraphs();
+            }
+            
+            //reset times 
+            graphTime = 0;
+            lastTime = 0;
+        }
     }
+    
     /**
      * saves all the variables in a file using FileChooser
      * @param event 
