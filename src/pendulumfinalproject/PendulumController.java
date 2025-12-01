@@ -342,21 +342,30 @@ public class PendulumController implements Initializable {
         fileChooser.getExtensionFilters().add(
             new FileChooser.ExtensionFilter("Pendulum Files", "*.pendulum")
         );
-
+        
         File file = fileChooser.showSaveDialog(null);
         if (file == null) return;
         
-        try (PrintWriter out = new PrintWriter(file)) {
-            //writes all the variables in the file
-            out.println("length=" + length);
-            out.println("mass=" + mass);
-            out.println("angle=" + angle);
-            out.println("velocity=" + airDrag);
-            out.println("gravity=" + gravity);
-            out.println("damping=" + airDrag);
+        try {
+            
+            if (!file.exists()) {
+                file.createNewFile();   // <-- THIS is the only required addition
+            }
+            
+            try (PrintWriter out = new PrintWriter(file)) {
+                //writes all the variables in the file
+                out.println("length=" + length);
+                out.println("mass=" + mass);
+                out.println("angle=" + angle);
+                out.println("velocity=" + airDrag);
+                out.println("gravity=" + gravity);
+                out.println("damping=" + airDrag);
+            }
+        
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
     }
 
     /**
