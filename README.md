@@ -1,4 +1,4 @@
-# Pendulum Simulation Project
+![Pendulum Screenshot](image/pendulumIcon.jpg) # Pendulum Simulation Project
 
 This project is a **JavaFX-based pendulum simulator** that visually animates a swinging pendulum and displays its motion through graphs such as angle vs. time and velocity vs. time. It is designed as a small physics/graphics project that demonstrates animation, geometry, and UI control in JavaFX.
 
