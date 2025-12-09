@@ -10,7 +10,7 @@ This project is a **JavaFX-based pendulum simulator** that visually animates a s
   
 
 ### Requirements
-To run this project, there a few requirements. You must have JDK 17+ installed on your computer as well as an IDE that supports javaFX.
+To run this project, there are a few requirements: You must have JDK 17+ installed on your computer as well as an IDE that supports javaFX.
 
 ## How to run the project
 1. Clone the repository using gitbash or the IDE: (git clone https://github.com/AdamKhales/Pendulum-Simulation-Project.git)
@@ -30,6 +30,46 @@ The app allows you to pause the movement of the pendulum whenever you want by pr
 
 ## Save and Load
 The Pendulum Simulation app allows the user to save the variables to a file that ends with .pendulum. Naturally, the app also has a feature that lets the user load back the selected variables from a valid file using FileChooser.
+
+# Teamwork Summary - A section where the contribution of each team member is clearly stated
+##  Adam Khales
+- Created the Pendulum FXML
+- Created PendulumController
+- Implemented the Event handlers for all buttons 
+- Created the physics methods that follow simple harmonic motion theory using Euler's method (small time frames)
+- Implemented AnimationTimer for realistic animation
+  - Created updatePhysics(), updateLayout(), and updateGraphs() methods that are called many times per second to ensure the motion of the pendulum to be smooth
+- Added JUnit tests for physics-related methods  
+- Fixed pause/start issues affecting pendulum behavior
+- Added the Load and Save feature  
+- Improved loading/saving variable logic
+- Added icons to the pendulum and graph windows
+- Implemented graph elements in the controllers
+- Cleaned up the code and added comments and javaDoc everywhere
+- Fixed issues all over the code
+
+##  Thomas Archambault
+- Created Graph window FXML
+- Created and organized the GraphController class
+- Implemented the graph window button that opens a new stage with the graphs
+- Implemented plotting fucntionnality for:
+   - Angle vs. time
+   - Velocity vs. time
+   - Acceleration vs. time
+- Added real-time chart updating using data series
+- Added clearGraphs() to reset all chart data
+- Helped shape the first version of Pendulum FXML
+- Fixewd issues all ober the code
+- Added comments and JavaDoc everwhere
+
+## Summary
+- Adam focused on pendulum logic, physics, and unit testing.
+- Thomas ensured the that the graphing system displays and updates cleanly and dynamically without issues.
+
+- We both worked on things like documentation and comments as well as each FXML layout relevant to our tasks.
+
+  
+
    
 
 
